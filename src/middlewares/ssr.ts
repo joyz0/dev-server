@@ -30,9 +30,9 @@ interface IServerRender {
   (params: IServerRenderParams): Promise<IServerRenderResult>;
 }
 
-const staticPath = path.resolve(__dirname, '../front');
-
 export const ssr: ServerMiddleware = ({ app, config }) => {
+  const staticPath = path.resolve(__dirname, config.ssr.path);
+
   app.use(
     compress({
       threshold: 2048,

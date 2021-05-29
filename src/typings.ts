@@ -4,6 +4,10 @@ import { RequestListener, Server as HttpServer } from 'http';
 
 type ProxyOptions = {};
 
+type SSROptions = {
+  // umi.server.js 所在目录
+  path: string;
+};
 export interface RCSConfig {
   /**
    * Project root directory. Can be an absolute path, or a path relative from
@@ -20,6 +24,8 @@ export interface RCSConfig {
    * Server specific options, e.g. host, port, https...
    */
   server: ServerOptions;
+
+  ssr: SSROptions;
 }
 
 export interface RCSServer {
