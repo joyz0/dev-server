@@ -1,4 +1,4 @@
-import * as https from 'https';
+import { ServerOptions as HttpsServerOptions } from 'https';
 import Koa, { DefaultState, DefaultContext } from 'koa';
 import { RequestListener, Server as HttpServer } from 'http';
 
@@ -31,7 +31,7 @@ export interface RCSServer {
 export interface ServerOptions {
   host?: string | boolean;
   port?: number;
-  https?: boolean | https.ServerOptions;
+  https?: boolean | HttpsServerOptions;
   open?: boolean | string;
   proxy?: Record<string, string | ProxyOptions>;
 }

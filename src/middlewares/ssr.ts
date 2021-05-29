@@ -1,7 +1,36 @@
 import type { ServerMiddleware } from '../typings';
 import compress from 'koa-compress';
+import mount from 'koa-mount';
 import path from 'path';
+import { PassThrough, Stream } from 'stream';
 import type { RCSContext } from '../typings';
+
+interface IServerRenderParams {
+  path: string;
+  htmlTemplate?: string;
+  mountElementId?: string;
+  context?: object;
+  mode?: 'string' | 'stream';
+  basename?: string;
+  staticMarkup?: boolean;
+  forceInitial?: boolean;
+  removeWindowInitialProps?: boolean;
+  getInitialPropsCtx?: object;
+  manifest?: string;
+  [k: string]: any;
+}
+
+interface IServerRenderResult<T = string | Stream> {
+  rootContainer: T;
+  html: T;
+  error: Error;
+}
+
+interface IServerRender {
+  (params: IServerRenderParams): Promise<IServerRenderResult>;
+}
+
+const staticPath = path.resolve(__dirname, '../front');
 
 export const ssr: ServerMiddleware = ({ app, config }) => {
   app.use(
@@ -17,7 +46,7 @@ export const ssr: ServerMiddleware = ({ app, config }) => {
     }),
   );
 
-  let render: any;
+  let render: IServerRender;
   app.use(async (ctx, next) => {
     /**
      *  扩展global对象
@@ -37,25 +66,34 @@ export const ssr: ServerMiddleware = ({ app, config }) => {
     // 符合要求的路由才进行服务端渲染，否则走静态文件逻辑
     if (!ext) {
       if (!render) {
-        render = require('../../dist/umi.server');
+        render = require(path.join(staticPath, 'umi.server.js'));
       }
-      // 这里默认是字符串渲染
-      ctx.type = 'text/html';
-      ctx.status = 200;
-      const { html, error } = await render({
+
+      const { html, error, rootContainer } = await render({
+        basename: 'reactcases',
         path: ctx.request.url,
+        mode: 'stream',
       });
       if (error) {
         console.log('----------------服务端报错-------------------', error);
         ctx.throw(500, error);
+      } else {
+        ctx.status = 200;
+        ctx.type = 'text/html';
       }
-      ctx.body = html;
+      if (html instanceof Stream) {
+        // 流渲染
+        // ctx.type = 'application/octet-stream';
+        ctx.body = html.on('error', ctx.onerror).pipe(new PassThrough());
+      } else {
+        ctx.body = html;
+      }
     } else {
       await next();
     }
   });
 
-  //   app.use(require('koa-static')(root));
+  app.use(mount('/reactcases', require('koa-static')(staticPath)));
 };
 
 const parseCookie = (ctx: RCSContext) => {

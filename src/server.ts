@@ -98,8 +98,8 @@ async function startServer(
       httpServer.removeListener('error', onError);
 
       info(
-        `\n  vite v${
-          require('vite/package.json').version
+        `\n  dev-server v${
+          require('../package.json').version
         } dev server running at:\n`,
       );
 

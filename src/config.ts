@@ -2,11 +2,12 @@ import type { RCSConfig } from './typings';
 
 export function resolveConfig() {
   const config: RCSConfig = {
+    base: '/',
     server: {
       host: 'localhost',
       port: 7001,
-      https: true,
-      open: true,
+      https: false,
+      open: false,
     },
   };
   return config;
