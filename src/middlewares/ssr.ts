@@ -70,7 +70,7 @@ export const ssr: ServerMiddleware = ({ app, config }) => {
       }
 
       const { html, error, rootContainer } = await render({
-        basename: 'reactcases',
+        basename: config.ssr.basename,
         path: ctx.request.url,
         mode: 'stream',
       });
@@ -93,7 +93,7 @@ export const ssr: ServerMiddleware = ({ app, config }) => {
     }
   });
 
-  app.use(mount('/reactcases', require('koa-static')(staticPath)));
+  app.use(mount(`/${config.ssr.basename}`, require('koa-static')(staticPath)));
 };
 
 const parseCookie = (ctx: RCSContext) => {

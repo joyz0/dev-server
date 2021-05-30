@@ -7,6 +7,7 @@ type ProxyOptions = {};
 type SSROptions = {
   // umi.server.js 所在目录
   path: string;
+  basename: string;
 };
 export interface RCSConfig {
   /**
