@@ -1,17 +1,20 @@
 import type { RCSConfig } from './typings';
 
+const { NODE_ENV } = process.env;
 export function resolveConfig() {
   const config: RCSConfig = {
     base: '/',
     ssr: {
-      path: '/usr/src/reactcases/ssr_html',
+      path:
+        NODE_ENV === 'production'
+          ? '/usr/src/reactcases/ssr_html'
+          : 'F:\\Codes\\justable\\dev-server\\dist\\front',
       basename: '',
-      // path: 'F:\\Codes\\justable\\dev-server\\dist\\front',
     },
     server: {
       host: 'localhost',
       port: 7001,
-      https: false,
+      https: true,
       open: false,
     },
   };

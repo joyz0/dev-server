@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "node dist/start.js",
-    "build": "tsc",
+    "build:dev": "cross-env NODE_ENV=development tsc",
+    "build": "cross-env NODE_ENV=production tsc",
     "dev:node": "tsc -w --incremental -p src/start.ts"
   },
   "dependencies": {
@@ -15,6 +16,7 @@
     "@types/koa-mount": "^4.0.0",
     "@types/node": "^15.6.0",
     "chalk": "^4.1.1",
+    "cross-env": "^7.0.3",
     "fs-extra": "^10.0.0",
     "koa": "^2.13.1",
     "koa-compress": "^5.0.1",
