@@ -4,9 +4,9 @@ export function resolveConfig() {
   const config: RCSConfig = {
     base: '/',
     ssr: {
-      // path: '/usr/src/reactcases/ssr_html',
+      path: '/usr/src/reactcases/ssr_html',
       basename: '',
-      path: 'F:\\Codes\\justable\\dev-server\\dist\\front',
+      // path: 'F:\\Codes\\justable\\dev-server\\dist\\front',
     },
     server: {
       host: 'localhost',
