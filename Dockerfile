@@ -6,9 +6,9 @@ COPY package.json .
 
 RUN npm install --production
 
-RUN npm run build
+COPY . .
 
-COPY ./dist .
+RUN npm run build
 
 EXPOSE 7002
 
