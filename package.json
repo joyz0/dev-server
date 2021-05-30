@@ -8,7 +8,7 @@
     "build": "tsc",
     "dev:node": "tsc -w --incremental -p src/start.ts"
   },
-  "devDependencies": {
+  "dependencies": {
     "@types/fs-extra": "^9.0.11",
     "@types/koa": "^2.13.1",
     "@types/koa-compress": "^4.0.1",
